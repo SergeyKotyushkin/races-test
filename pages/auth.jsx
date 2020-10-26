@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import encrypt from "../lib/encryption/rsa/encrypt";
+import { encrypt as rsaEncrypt } from "../lib/encryption/rsa/encrypt";
 
 const AuthPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
@@ -9,7 +9,7 @@ const AuthPage = () => {
     e.preventDefault();
 
     const body = {
-      login: encrypt(e.currentTarget.login.value, process.env.NEXT_PUBLIC_RSA_ENCRYPT_PUBLIC_KEY)
+      login: rsaEncrypt(e.currentTarget.login.value, process.env.NEXT_PUBLIC_RSA_ENCRYPT_PUBLIC_KEY)
     };
 
     const response = await fetch('/api/auth', {
