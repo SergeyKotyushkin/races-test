@@ -1,9 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Head from 'next/head';
+import Router from 'next/router';
 import { encrypt as rsaEncrypt } from "../lib/encryption/rsa/encrypt";
+import { useTeam } from '../lib/react-hooks/use-team';
 
 const AuthPage = () => {
+  // useRef stores isInitialMount flag, useRef does not cause re-render
+  const isInitialMount = useRef(true);
+  const [team] = useTeam();
+  const [hasAuthCheck, setHasAuthCheck] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // useEffect runs once on component mount and every time when the state of the 'team' changes
+  useEffect(() => {
+    // it is not needed to do some logic if it is mount callback
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    }
+    else {
+      if (team) {
+        // if team is authenticated then redirect to index
+        Router.replace('/');
+      }
+      else {
+        setHasAuthCheck(true);
+      }
+    }
+  }, [team]);
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -19,13 +42,17 @@ const AuthPage = () => {
     });
 
     if (response.status === 200) {
-      // todo: redirect to associate page
-      alert("Success!");
+      Router.replace('/');
     } else {
       // todo: change error message template
       setErrorMessage(`Failure! ${response.status} ${response.statusText}.`);
     }
   }
+
+  if (!hasAuthCheck)
+    return (
+      <span>Loading...</span>
+    );
 
   return (
     <>
