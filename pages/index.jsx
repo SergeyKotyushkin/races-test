@@ -3,11 +3,10 @@ import Router from 'next/router';
 
 export default function Home() {
   async function handleLogout() {
-    var response = await fetch('/api/auth', {
+    await fetch('/api/auth', {
       method: 'DELETE',
     });
 
-    console.log('response status', response.status);
     Router.replace('/auth');
   };
 
