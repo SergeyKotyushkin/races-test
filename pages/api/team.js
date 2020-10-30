@@ -5,6 +5,8 @@ const handler = nextConnect();
 handler.use(auth);
 
 // todo: return only safe team properties
-handler.get(async (req, res) => res.json({ team: req.user }));
+handler.get(async (req, res) => {
+  res.json({ team: req.user || null })
+});
 
 export default handler;
