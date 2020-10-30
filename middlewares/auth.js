@@ -12,3 +12,14 @@ middleware
   .use(passport.session());
 
 export default middleware;
+
+
+export function mustAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    next();
+    return;
+  }
+
+  console.error('Unauthenticated request');
+  res.status(401).end();
+}
