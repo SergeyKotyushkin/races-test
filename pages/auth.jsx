@@ -3,8 +3,24 @@ import Head from 'next/head';
 import Router from 'next/router';
 import { encrypt as rsaEncrypt } from "../lib/encryption/rsa/encrypt";
 import { useTeam } from '../lib/react-hooks/use-team';
+import Header from '../components/header';
+import { makeStyles } from "@material-ui/core/styles";
+import Container from '@material-ui/core/Container';
+import { Typography, TextField, Button } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) =>
+  ({
+    container: {
+      marginTop: theme.spacing(5)
+    },
+    button: {
+      margin: theme.spacing(1)
+    }
+  })
+);
 
 const AuthPage = () => {
+  const classes = useStyles();
   const [team, { error }] = useTeam();
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -29,14 +45,14 @@ const AuthPage = () => {
     }
   }
 
-  if(error) {
+  if (error) {
     return (
       <span>Error!</span>
     );
   }
 
   if (team !== null) {
-    if(team !== undefined) {
+    if (team !== undefined) {
       Router.replace('/');
     }
 
@@ -50,19 +66,22 @@ const AuthPage = () => {
       <Head>
         <title>Authorization</title>
       </Head>
-      <p>Hello man!</p>
-      <p>Please reveal yourself :)</p>
-      <form onSubmit={onSubmit}>
-        <label htmlFor="email">
-          <input id="login" type="login" name="login" placeholder="Login" />
-        </label>
-        <button type="submit">Log in</button>
+      <Header />
+      <Container maxWidth="md" className={classes.container}>
+        <Typography variant="body1" gutterBottom>Hello man!</Typography>
+        <Typography variant="body1" gutterBottom>Please enter your secret code for authentication.</Typography>
+        <form onSubmit={onSubmit}>
+          <p>
+            <TextField label="Code" name="login" color="default" color="secondary" />
+            <Button type="submit" variant="contained" color="primary" className={classes.button}>Log in</Button>
+          </p>
+        </form>
         {
           errorMessage
-            ? <p style={{ color: 'red' }}>{errorMessage}</p>
+            ? <Typography color="error">{errorMessage}</Typography>
             : null
         }
-      </form>
+      </Container>
     </>
   );
 }

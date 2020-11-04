@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router';
 import { useTeam } from '../lib/react-hooks/use-team';
-import Header from '../components/header/index';
+import Header from '../components/header';
 
 
 export default function Home() {
