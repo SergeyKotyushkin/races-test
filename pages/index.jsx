@@ -1,9 +1,10 @@
+import { useEffect } from 'react';
 import Head from 'next/head'
 import { useRouter } from 'next/router';
 import { useTeam } from '../lib/react-hooks/use-team';
 import Header from '../components/header';
 import { makeStyles } from "@material-ui/core/styles";
-import { Container } from '@material-ui/core';
+import { CircularProgress, Container, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) =>
   ({
@@ -13,16 +14,16 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export default function Home() {
+const Index = () => {
   const classes = useStyles();
   const router = useRouter();
-  const [team, { error, mutate }] = useTeam();
+  const [team, { error }] = useTeam();
 
-  if (team === null) {
-    mutate(null);
-    router.replace('/auth');
-    return <></>;
-  }
+  useEffect(() => {
+    if (team === null) {
+      router.replace('/auth');
+    }
+  }, [team]);
 
   return (
     <>
@@ -31,18 +32,31 @@ export default function Home() {
       </Head>
       <Header />
       {
-        error
-          ? (
-            <Container maxWidth="lg" className={classes.container}>
-              <Typography color="error" gutterBottom>Team validation error.</Typography>
-            </Container>
-          )
-          : (
-            <Container maxWidth="lg" className={classes.container}>
-              <p>Index</p>
-            </Container>
-          )
+        error && team &&
+        (
+          <Container maxWidth="lg" className={classes.container}>
+            <Typography color="error" gutterBottom>Team validation error.</Typography>
+          </Container>
+        )
+      }
+      {
+        !error && team &&
+        (
+          <Container maxWidth="lg" className={classes.container}>
+            <Typography gutterBottom>Index</Typography>
+          </Container>
+        )
+      }
+      {
+        !team &&
+        (
+          <Container maxWidth="lg" className={classes.container}>
+            <CircularProgress color="inherit"/>
+          </Container>
+        )
       }
     </>
   )
 }
+
+export default Index;

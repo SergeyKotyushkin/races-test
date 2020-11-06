@@ -1,8 +1,8 @@
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTeam } from '../lib/react-hooks/use-team';
-import { Button, Menu, MenuItem } from '@material-ui/core';
+import { CircularProgress, Button, Menu, MenuItem } from '@material-ui/core';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Team = () => {
   const router = useRouter();
@@ -27,11 +27,17 @@ const Team = () => {
     });
 
     mutate(null);
-    router.replace('/auth');
+    // router.replace('/auth');
   }
 
+  useEffect(() => {
+    if (team === null) {
+      router.replace('/auth');
+    }
+  }, [team]);
+
   if (error) return <></>; // do nothing here, handle error in parent component
-  if (team === undefined) return <CircularProgress color="inherit"/>;
+  if (team === undefined) return <CircularProgress color="inherit" />;
   if (team === null) return <></>;
 
   return (
