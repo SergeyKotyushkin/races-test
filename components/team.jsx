@@ -30,7 +30,7 @@ const Team = () => {
     router.replace('/auth');
   }
 
-  if (error) return <span>Error</span>;
+  if (error) return <></>; // do nothing here, handle error in parent component
   if (team === undefined) return <CircularProgress color="inherit"/>;
   if (team === null) return <></>;
 

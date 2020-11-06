@@ -5,13 +5,15 @@ import { encrypt as rsaEncrypt } from "../lib/encryption/rsa/encrypt";
 import { useTeam } from '../lib/react-hooks/use-team';
 import Header from '../components/header';
 import { makeStyles } from "@material-ui/core/styles";
-import Container from '@material-ui/core/Container';
-import { Typography, TextField, Button } from '@material-ui/core';
+import { Container, Typography, TextField, Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) =>
   ({
     container: {
       marginTop: theme.spacing(5)
+    },
+    form: {
+      marginTop: theme.spacing(2)
     },
     button: {
       margin: theme.spacing(1)
@@ -45,20 +47,10 @@ const AuthPage = () => {
     }
   }
 
-  if (error) {
-    return (
-      <span>Error!</span>
-    );
-  }
-
   if (team !== null) {
-    if (team !== undefined) {
-      Router.replace('/');
-    }
+    if (team !== undefined) Router.replace('/');
 
-    return (
-      <span>Loading...</span>
-    );
+    return <span>Loading...</span>;
   }
 
   return (
@@ -67,21 +59,27 @@ const AuthPage = () => {
         <title>Authorization</title>
       </Head>
       <Header />
-      <Container maxWidth="md" className={classes.container}>
-        <Typography variant="body1" gutterBottom>Hello man!</Typography>
-        <Typography variant="body1" gutterBottom>Please enter your secret code for authentication.</Typography>
-        <form onSubmit={onSubmit}>
-          <p>
-            <TextField label="Code" name="login" color="default" color="secondary" />
-            <Button type="submit" variant="contained" color="primary" className={classes.button}>Log in</Button>
-          </p>
-        </form>
-        {
-          errorMessage
-            ? <Typography color="error">{errorMessage}</Typography>
-            : null
-        }
-      </Container>
+      {
+        error
+          ? (
+            <Container maxWidth="lg" className={classes.container}>
+              <Typography color="error" gutterBottom>Team validation error.</Typography>
+            </Container>
+          )
+          : (
+            <Container maxWidth="lg" className={classes.container}>
+              <Typography variant="body1" gutterBottom>Hello man!</Typography>
+              <Typography variant="body1" gutterBottom>Please enter your secret code for authentication.</Typography>
+              <form onSubmit={onSubmit} className={classes.form}>
+                <TextField label="Code" name="login" color="default" color="secondary" />
+                <Button type="submit" variant="contained" color="primary" className={classes.button}>Log in</Button>
+              </form>
+              {
+                errorMessage && <Typography color="error">{errorMessage}</Typography>
+              }
+            </Container>
+          )
+      }
     </>
   );
 }
