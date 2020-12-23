@@ -8,7 +8,7 @@ handler.use(auth);
 
 handler.post(passport.authenticate('local'), (req, res) => {
   // todo: filter returning properties
-  res.json({ user: req.user });
+  res.json({ account: req.user });
 });
 
 handler.delete(mustAuthenticated, (req, res) => {

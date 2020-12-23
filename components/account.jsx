@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useTeam } from '../lib/react-hooks/use-team';
+import { useAccount } from '../lib/react-hooks/use-account';
 import { CircularProgress, Button, Menu, MenuItem } from '@material-ui/core';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 
-const Team = () => {
+const Account = () => {
   const router = useRouter();
-  const [team, { error, mutate }] = useTeam();
+  const [account, { error, mutate }] = useAccount();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -31,14 +31,14 @@ const Team = () => {
   }
 
   useEffect(() => {
-    if (team === null) {
+    if (account === null) {
       router.replace('/auth');
     }
-  }, [team]);
+  }, [account]);
 
   if (error) return <></>; // do nothing here, handle error in parent component
-  if (team === undefined) return <CircularProgress color="inherit" />;
-  if (team === null) return <></>;
+  if (account === undefined) return <CircularProgress color="inherit" />;
+  if (account === null) return <></>;
 
   return (
     <>
@@ -50,7 +50,7 @@ const Team = () => {
         onClick={handleClick}
         endIcon={<GroupWorkIcon />}
       >
-        {team.name}
+        {account.name}
       </Button>
       <Menu
         id="profile-menu"
@@ -65,4 +65,4 @@ const Team = () => {
   )
 }
 
-export default Team;
+export default Account;

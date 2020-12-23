@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { encrypt as rsaEncrypt } from "../lib/encryption/rsa/encrypt";
-import { useTeam } from '../lib/react-hooks/use-team';
+import { useAccount } from '../lib/react-hooks/use-account';
 import Header from '../components/header';
 import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress, Container, Typography, TextField, Button } from '@material-ui/core';
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) =>
 const AuthPage = () => {
   const classes = useStyles();
   const router = useRouter();
-  const [team, { error, mutate }] = useTeam();
+  const [account, { error, mutate }] = useAccount();
   const [loginProcessing, setLoginProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -53,10 +53,10 @@ const AuthPage = () => {
   }
 
   useEffect(() => {
-    if (team) {
+    if (account) {
       router.replace('/');
     }
-  }, [team]);
+  }, [account]);
 
   return (
     <>
@@ -68,7 +68,7 @@ const AuthPage = () => {
         error &&
         (
           <Container maxWidth="lg" className={classes.container}>
-            <Typography color="error" gutterBottom>Team validation error.</Typography>
+            <Typography color="error" gutterBottom>Account validation error.</Typography>
           </Container>
         )
       }

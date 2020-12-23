@@ -1,4 +1,4 @@
-import Team from "./team";
+import Account from "./account";
 import { makeStyles } from '@material-ui/core/styles';
 import { Toolbar, Typography, AppBar } from '@material-ui/core';
 
@@ -15,7 +15,7 @@ const Header = () => {
     <AppBar position="static" color="inherit">
       <Toolbar>
         <Typography variant="h6" className={classes.title}>Races</Typography>
-        <Team />
+        <Account />
       </Toolbar>
     </AppBar>
   )

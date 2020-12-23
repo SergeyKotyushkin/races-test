@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Head from 'next/head'
 import { useRouter } from 'next/router';
-import { useTeam } from '../lib/react-hooks/use-team';
+import { useAccount } from '../lib/react-hooks/use-account';
 import Header from '../components/header';
 import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress, Container, Typography } from '@material-ui/core';
@@ -17,13 +17,13 @@ const useStyles = makeStyles((theme) =>
 const Index = () => {
   const classes = useStyles();
   const router = useRouter();
-  const [team, { error }] = useTeam();
+  const [account, { error }] = useAccount();
 
   useEffect(() => {
-    if (team === null) {
+    if (account === null) {
       router.replace('/auth');
     }
-  }, [team]);
+  }, [account]);
 
   return (
     <>
@@ -32,15 +32,15 @@ const Index = () => {
       </Head>
       <Header />
       {
-        error && team &&
+        error && account &&
         (
           <Container maxWidth="lg" className={classes.container}>
-            <Typography color="error" gutterBottom>Team validation error.</Typography>
+            <Typography color="error" gutterBottom>Account validation error.</Typography>
           </Container>
         )
       }
       {
-        !error && team &&
+        !error && account &&
         (
           <Container maxWidth="lg" className={classes.container}>
             <Typography gutterBottom>Index</Typography>
@@ -48,7 +48,7 @@ const Index = () => {
         )
       }
       {
-        !team &&
+        !account &&
         (
           <Container maxWidth="lg" className={classes.container}>
             <CircularProgress color="inherit"/>

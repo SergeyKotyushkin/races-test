@@ -4,9 +4,9 @@ import auth from '../../middlewares/auth';
 const handler = nextConnect();
 handler.use(auth);
 
-// todo: return only safe team properties
+// todo: return only safe account properties
 handler.get(async (req, res) => {
-  res.json({ team: req.user || null })
+  res.json({ account: req.user || null })
 });
 
 export default handler;
